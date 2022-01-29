@@ -15,3 +15,67 @@ if (process.argv[2] === 'create') {
     })
     .catch((error) => console.log(error));
 }
+
+if (process.argv[2] === 'add-attrac') {
+  // getting tripId first for later insert into attractions table
+  const getTripIDAddAttraction = async () => {
+    try {
+      const tripResponse = await db.Trip.findOne({
+        where: {
+          name: process.argv[3],
+        },
+      });
+
+      if (tripResponse === null) {
+        throw 'this trip does not exist';
+      }
+
+      const tripId = tripResponse.id;
+      console.log(`type of tripId: ${typeof tripId}`);
+      console.log(`tripId: ${tripId}`);
+
+      db.Attraction.create({
+        name: process.argv[4],
+        trip_id: tripId,
+      });
+    // catch errors thrown by client.query
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  getTripIDAddAttraction();
+}
+
+if (process.argv[2] === 'trip') {
+  // getting tripId first for later insert into attractions table
+  const getTripIdAllAttractions = async () => {
+    try {
+      const tripResponse = await db.Trip.findOne({
+        where: {
+          name: process.argv[3],
+        },
+      });
+
+      if (tripResponse === null) {
+        throw 'this trip does not exist';
+      }
+
+      const tripId = tripResponse.id;
+      console.log(`tripId: ${tripId}`);
+
+      const getAttractionsByTripID = await
+      db.Attraction.findAll({
+        where: {
+          trip_id: tripId,
+        },
+      });
+      console.log('getting all attractions by trip_id...');
+      // at Zaver's suggestion - why does this work so well??
+      console.log(getAttractionsByTripID.map((result) => result.name));
+    // catch errors thrown by client.query
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  getTripIdAllAttractions();
+}

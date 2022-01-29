@@ -21,7 +21,7 @@ export default function initAttractionModel(sequelize, DataTypes) {
       name: {
         type: DataTypes.STRING,
       },
-      tripId: {
+      trip_id: {
         type: DataTypes.INTEGER,
         // https://stackoverflow.com/questions/29904939/writing-migrations-with-foreign-keys-using-sequelizejs
         // foreign keys can be referenced in sequelize
